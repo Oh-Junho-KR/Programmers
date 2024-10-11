@@ -1,0 +1,53 @@
+using System;
+using System.Collections.Generic;
+
+public class Solution {
+    public int[] solution(int[] progresses, int[] speeds) {
+        int[] answer = null;
+
+        int nCnt = 0; // 오픈 가능 개수
+        int nDay = 0; // 비교 대상 기준 일수
+
+        Queue<int> queDays = new Queue<int>(); // 남은 개발 일수
+        List<int> lstCnt = new List<int>(); // 결과
+
+        // 남은 개발 일수 정리
+        for (int i = 0; i < progresses.Length; i++)
+        {
+            int nEndDay = (100 - progresses[i]) % speeds[i] > 0 ? (100 - progresses[i]) / speeds[i] + 1 : (100 - progresses[i]) / speeds[i];
+            queDays.Enqueue(nEndDay);
+        }
+
+        while (true)
+        {
+            if (queDays.Count == 0)
+            {
+                lstCnt.Add(nCnt);
+                break;
+            }
+
+            if (nCnt == 0)
+            {
+                nDay = queDays.Dequeue();
+                nCnt++;
+
+                continue;
+            }
+
+            if (nDay < queDays.Peek())
+            {
+                lstCnt.Add(nCnt);
+                nCnt = 0;
+            }
+            else
+            {
+                queDays.Dequeue();
+                nCnt++;
+            }
+        }
+
+        answer = lstCnt.ToArray();
+
+        return answer;
+    }
+}
