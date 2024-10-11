@@ -1,0 +1,44 @@
+using System;
+using System.Collections.Generic;
+
+class Solution
+{
+    public int[] solution(int n, string[] words)
+    {
+        int[] answer = new int[2] { 0, 0 };
+        char cPreLastWord = '\0'; // 직전 단어 마지막 글자
+        Dictionary<string, int> dicWord = new Dictionary<string, int>();
+        for (int i = 0; i < words.Length; i++)
+        {
+            if (cPreLastWord != '\0') // 첫 시작이 아니면
+            {
+                // 직전 단어의 마지막 글자와 지금 단어의 첫 글자가 다른지 체크
+                if (cPreLastWord != words[i][0])
+                {
+                    answer[0] = i % n + 1;
+                    answer[1] = i / n + 1;
+
+                    break;
+                }                  
+            }
+
+            // 불렸던 단어인지 체크
+            if (dicWord.ContainsKey(words[i]))
+            {
+                answer[0] = i % n + 1;
+                answer[1] = i / n + 1;
+
+                break;
+            }
+            else
+            {
+                dicWord.Add(words[i], 1);
+            }
+
+            // 직전 단어의 마지막 글자 저장
+            cPreLastWord = words[i][words[i].Length - 1];
+        }
+
+        return answer;
+    }
+}
