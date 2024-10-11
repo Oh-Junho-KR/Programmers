@@ -1,0 +1,43 @@
+using System;
+
+public class Solution {
+    public int solution(int[,] dots) {
+        int answer = 0;
+            
+        for (int i = 1; i < dots.GetLength(0); i++)
+        {
+            float fCurDisX = dots[i, 0] - dots[0, 0];
+            float fCurDixY = dots[i, 1] - dots[0, 1];
+            float fCurTan = fCurDixY / fCurDisX;
+
+            float fComDisX = 0.0f;
+            float fComDisY = 0.0f;
+            float fComTan = 0.0f;
+
+            if (i == 1)
+            {
+                fComDisX = dots[3, 0] - dots[2, 0];
+                fComDisY = dots[3, 1] - dots[2, 1];
+                fComTan = fComDisY / fComDisX;
+            } else if (i == 2)
+            {
+                fComDisX = dots[3, 0] - dots[1, 0];
+                fComDisY = dots[3, 1] - dots[1, 1];
+                fComTan = fComDisY / fComDisX;
+            } else if (i == 3)
+            {
+                fComDisX = dots[2, 0] - dots[1, 0];
+                fComDisY = dots[2, 1] - dots[1, 1];
+                fComTan = fComDisY / fComDisX;
+            }
+
+            if (fCurTan == fComTan)
+            {
+                answer = 1;
+                break;
+            }
+        }
+
+        return answer;
+    }
+}
