@@ -1,0 +1,102 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+public class Solution {
+    public string solution(string X, string Y) {
+        // 정답
+        string answer = "";
+        StringBuilder strBuilder = new StringBuilder();
+        // 문자열 길이가 짧은 Index
+        int nCur = 0;
+        // 문자열 길이가 긴 Index
+        int nCom = 0;
+        // 길이가 짧은 문자열 저장
+        string sCur = "";
+
+        // lstNum 정렬하기 위한 배열
+        int[] ArrNum = null;
+        // X, Y에 둘다 존재하는 숫자
+        List<int> lstNum = new List<int>();
+        // List[0] : X, List[1] : Y, Dic<숫자, 개수>
+        List<Dictionary<int, int>> dicDuo = new List<Dictionary<int, int>>();
+
+        // dic 초기화
+        dicDuo.Add(new Dictionary<int, int>());
+        dicDuo.Add(new Dictionary<int, int>());
+
+        // X의 값 dic[0]에 초기화
+        for (int i = 0; i < X.Length; i++)
+        {
+            if (dicDuo[0].ContainsKey(X[i]))
+            {
+                dicDuo[0][X[i]] += 1;
+            }
+            else
+            {
+                dicDuo[0][X[i]] = 1;
+            }
+        }
+
+        // Y의 값 dic[1]에 초기화
+        for (int i = 0; i < Y.Length; i++)
+        {
+            if (dicDuo[1].ContainsKey(Y[i]))
+            {
+                dicDuo[1][Y[i]] += 1;
+            }
+            else
+            {
+                dicDuo[1][Y[i]] = 1;
+            }
+        }
+
+        // X가 짧을 시 0, Y가 짧을 시 1
+        nCur = X.Length < Y.Length ? 0 : 1;
+        // nCur과 반대 숫자 (비교 대상)
+        nCom = nCur == 0 ? 1 : 0;
+        // nCur = 0이면 X, nCur == 1이면 Y
+        sCur = nCur == 0 ? X : Y;
+
+        // 길이가 짧은 문자열로 반복
+        for (int i = 0; i < sCur.Length; i++)
+        {
+            dicDuo[nCur][sCur[i]] -= 1;
+            // 비교 문자에 포함되어 있고 비교 문자에 개수가 남아있으면 lstNum에 추가
+            if (dicDuo[nCom].ContainsKey(sCur[i]) && dicDuo[nCom][sCur[i]] > 0)
+            {
+                dicDuo[nCom][sCur[i]] -= 1;
+                lstNum.Add(Int32.Parse(sCur[i].ToString()));
+            }
+        }
+
+        // 동일 문자 없으면 -1 return
+        if (lstNum.Count == 0)
+        {
+            answer = "-1";
+        }
+        else
+        {
+            // 최대값이 0일 경우 0 return
+            ArrNum = lstNum.ToArray();
+            if (ArrNum.Max() == 0)
+            {
+                answer = "0";
+            }
+            else
+            {
+                // 내림차순 정렬 후 문자열 치환
+                Array.Sort(ArrNum);
+                for (int i = ArrNum.Length - 1; i >= 0; i--)
+                {
+                    strBuilder.Append(ArrNum[i].ToString());
+                }
+
+                answer = strBuilder.ToString();
+            }
+        }
+        
+        return answer;
+    }
+}
