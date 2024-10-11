@@ -1,0 +1,71 @@
+using System;
+using System.Collections.Generic;
+
+public class Solution {
+    public int solution(string s) {
+        int answer = 0;
+
+        if (s.Length % 2 == 1)
+        {
+            return 0;
+        }
+        
+        for (int i = 0; i < s.Length; i++)
+        {
+            if (fnCheck(s.Substring(i) + s.Substring(0, i)))
+            {
+                answer++;
+            }
+        }
+
+        return answer;
+    }
+    
+    private bool fnCheck(string s) 
+    {
+        Stack<char> stkPat = new Stack<char>();
+
+        for (int i = 0; i < s.Length; i++)
+        {
+            if (s[i] == ')')
+            {
+                if (stkPat.Count != 0 && stkPat.Peek() == '(')
+                {
+                    stkPat.Pop();
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else if (s[i] == '}')
+            {
+                if (stkPat.Count != 0 && stkPat.Peek() == '{')
+                {
+                    stkPat.Pop();
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else if (s[i] == ']')
+            {
+                if (stkPat.Count != 0 && stkPat.Peek() == '[')
+                {
+                    stkPat.Pop();
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                stkPat.Push(s[i]);
+            }
+        }
+
+        return true;
+    }
+}
