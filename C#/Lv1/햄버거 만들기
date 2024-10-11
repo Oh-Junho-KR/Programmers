@@ -1,0 +1,41 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class Solution {
+    public int solution(int[] ingredient) {
+        int answer = 0;
+        int nIndex = 0;
+
+        List<int> lstIngredient = ingredient.ToList();
+
+        while (true)
+        {
+            if (nIndex > lstIngredient.Count - 1)
+            {
+                break;
+            }
+
+            if (nIndex < 3)
+            {
+                nIndex++;
+                continue;
+            }
+
+            if (lstIngredient[nIndex - 3] == 1 && lstIngredient[nIndex - 2] == 2&& lstIngredient[nIndex - 1] == 3&& lstIngredient[nIndex] == 1)
+            {
+                lstIngredient.RemoveAt(nIndex);
+                lstIngredient.RemoveAt(nIndex - 1);
+                lstIngredient.RemoveAt(nIndex - 2);
+                lstIngredient.RemoveAt(nIndex - 3);
+
+                nIndex -= 4;
+                answer++;
+            }
+
+            nIndex++;
+        }
+
+        return answer;
+    }
+}
