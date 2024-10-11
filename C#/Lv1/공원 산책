@@ -1,0 +1,136 @@
+using System;
+
+public class Solution {
+    public int[] solution(string[] park, string[] routes) {
+        // Result
+        int[] arrAnswer = new int[2];
+        // Minimum Index
+        int nMinPointX = 0;
+        int nMinPointY = 0;
+        // Maximum Index
+        int nMaxPointX = park[0].Length - 1;
+        int nMaxPointY = park.Length - 1;
+        
+        // Set Starting Point
+        for (int i = 0; i < park.Length; i++)
+        {
+            if (park[i].IndexOf('S') > -1)
+            {
+                arrAnswer[0] = i;
+                arrAnswer[1] = park[i].IndexOf('S');
+                break;
+            }
+        }
+        for (int i = 0; i < routes.Length; i++)
+        {
+            // Move Status
+            bool bMove = true;
+            int nDistance = 0;
+            // Split Direction Distance
+            string[] arrRoutes = routes[i].Split(' ');
+            switch (arrRoutes[0])
+            {
+                case "E":
+                    nDistance = int.Parse(arrRoutes[1]); // 거리 추출
+                    if (arrAnswer[1] + nDistance > nMaxPointX) // 1번 조건(공원 내부) : 맵 밖으로 벗어나는지 확인
+                    {
+                        bMove = false;
+                    }
+                    
+                    if (bMove) // 맵 밖으로 벗어나지 않았을 경우
+                    {
+                        // 2번 조건(장애물) : 움직이는 좌표에 'X' 있는지 확인
+                        for (int j = arrAnswer[1]; j < arrAnswer[1] + nDistance + 1; j++)
+                        {
+                            if (park[arrAnswer[0]][j] == 'X')
+                            {
+                                bMove = false;
+                            }
+                        }
+                    }
+                    
+                    // 1, 2번 조건 만족 시 이동
+                    if (bMove)
+                    {
+                        arrAnswer[1] += nDistance;
+                    }
+                    break;
+                case "W":
+                    nDistance = int.Parse(arrRoutes[1]);
+                    if (arrAnswer[1] - nDistance < nMinPointX)
+                    {
+                        bMove = false;
+                    }
+                    
+                    if (bMove)
+                    {
+                        for (int j = arrAnswer[1]; j > arrAnswer[1] - nDistance - 1; j--)
+                        {
+                            if (park[arrAnswer[0]][j] == 'X')
+                            {
+                                bMove = false;
+                            }
+                        }
+                    }
+                    
+                    if (bMove)
+                    {
+                        arrAnswer[1] -= nDistance;
+                    }
+                    break;
+                    
+                case "S":
+                    nDistance = int.Parse(arrRoutes[1]);
+                    if (arrAnswer[0] + nDistance > nMaxPointY)
+                    {
+                        bMove = false;
+                    }
+                    
+                    if (bMove)
+                    {
+                        for (int j = arrAnswer[0]; j < arrAnswer[0] + nDistance + 1; j++)
+                        {
+                            if (park[j][arrAnswer[1]] == 'X')
+                            {
+                                bMove = false;
+                            }
+                        }
+                    }
+                    
+                    if (bMove)
+                    {
+                        arrAnswer[0] += nDistance;
+                    }
+                    break;
+                    
+                case "N":
+                    nDistance = int.Parse(arrRoutes[1]);
+                    if (arrAnswer[0] - nDistance < nMinPointY)
+                    {
+                        bMove = false;
+                    }
+                    
+                    if (bMove)
+                    {
+                        for (int j = arrAnswer[0]; j > arrAnswer[0] - nDistance - 1; j--)
+                        {
+                            if (park[j][arrAnswer[1]] == 'X')
+                            {
+                                bMove = false;
+                            }
+                        }
+                    }
+                    
+                    if (bMove)
+                    {
+                        arrAnswer[0] -= nDistance;
+                    }
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
+        return arrAnswer;
+    }
+}
