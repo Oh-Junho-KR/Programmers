@@ -1,0 +1,166 @@
+using System;
+using System.Collections.Generic;
+
+public class Solution {
+    public string[] solution(string[,] arrPlans) {
+        string[] arrReturn = new string[] {}; // 과제 완료 순서 결과 값을 최종 return할 배열
+        Queue<string> queReturn = new Queue<string>(); // 과제 완료 순서대로 결과 저장할 Queue
+        List<Plan> lstPlan = new List<Plan>(); // 과제를 시간순서대로 정렬하기 위한 List
+        Stack<Plan> stkPlan = new Stack<Plan>(); // 보류중인 과제를 저장할 Stack
+        int nCurTime = 0; // 현재 시간을 표현할 정수 값
+        
+        // 입력받은 과제(Plan)를 List에 저장
+        // 과제 = Plan(과제명, 시작시간, 남은시간)
+        // 시간은 정수로 치환 ex) 10:10 = 10 * 60 + 10 = 610 (Seconds)
+        for (int i = 0; i < arrPlans.GetLength(0); i++)
+        {
+            string[] arrSplitTime = arrPlans[i, 1].Split(':');
+            int nStartSeconds = int.Parse(arrSplitTime[0]) * 60 + int.Parse(arrSplitTime[1]);
+            int nRemainSeconds = int.Parse(arrPlans[i, 2]);
+            lstPlan.Add(new Plan(arrPlans[i, 0], nStartSeconds, nRemainSeconds));
+        }
+        
+        // 과제를 시작 시간으로 정렬
+        lstPlan.Sort((x, y) => x.StartSeconds.CompareTo(y.StartSeconds));
+        
+        // 해야할 과제와 보류중인 과제가 있다면 반복
+        while (lstPlan.Count != 0 || stkPlan.Count != 0)
+        {
+            if (stkPlan.Count > 0) // 보류중인 과제가 있을 때
+            {
+                if (lstPlan.Count > 0) // 해야할 과제가 있다면
+                {
+                    if (nCurTime < lstPlan[0].StartSeconds) // 보류중인 과제를 해도 된다면
+                    {
+                        // 보류중인 과제가 다음 과제를 하기전에 마무리 할 수 있다면 
+                        if (stkPlan.Peek().RemainSeconds <= lstPlan[0].StartSeconds - nCurTime)
+                        {
+                            // 현재 시간에 보류중인 과제의 남은 시간을 더하고
+                            nCurTime += stkPlan.Peek().RemainSeconds; 
+                            // 과제 완료 추가, 보류 과제 삭제
+                            queReturn.Enqueue(stkPlan.Pop().Name);
+                        }
+                        else // 보류중인 과제를 하다가 다음 과제를 해야한다면
+                        {
+                            // 지금 진행하고 있는 보류 과제의 남은 시간을 진행한 만큼 빼주고
+                            stkPlan.Peek().RemainSeconds -= lstPlan[0].StartSeconds - nCurTime;
+                            // 현재 시간을 다음 과제시간으로 변경
+                            nCurTime = lstPlan[0].StartSeconds;
+                        }
+                    }
+                    else // 다음 과제를 해야 한다면
+                    {
+                        if (lstPlan.Count > 1) // 과제 개수가 2개 이상이라면
+                        {
+                            // 과제를 다음 과제 시작 전에 마무리가 가능하면
+                            if (nCurTime + lstPlan[0].RemainSeconds <= lstPlan[1].StartSeconds)
+                            {
+                                // 현재 시간에 진행한 과제의 시간을 더하고
+                                nCurTime += lstPlan[0].RemainSeconds;
+                                // 과제 완료 추가
+                                queReturn.Enqueue(lstPlan[0].Name);
+                                // 완료한 과제 삭제
+                                lstPlan.RemoveAt(0);
+                            }
+                            else // 과제를 하다가 보류하고 다음 과제를 해야한다면
+                            {
+                                // 현재 진행중인 과제의 남은 시간을 빼주고
+                                lstPlan[0].RemainSeconds -= lstPlan[1].StartSeconds - nCurTime;
+                                // 현재 시간을 다음 과제 시간으로 변경
+                                nCurTime = lstPlan[1].StartSeconds;
+                                // 현재 과제를 보류 과제로 추가
+                                stkPlan.Push(lstPlan[0]);
+                                // 보류 과제에 추가한 과제를 제거
+                                lstPlan.RemoveAt(0);
+                            }
+                        }
+                        else // 과제 개수가 1개 남았다면
+                        {
+                            // 과제 완료 추가
+                            queReturn.Enqueue(lstPlan[0].Name);
+                            // 과제 제거
+                            lstPlan.RemoveAt(0);
+                        }
+                    }
+                }
+                else // 해야할 과제가 없으면
+                {
+                    // 보류 과제만 남았으니
+                    // 과제 완료 추가, 보류 과제 제거
+                    queReturn.Enqueue(stkPlan.Pop().Name);
+                }                   
+            }
+            else // 보류 과제는 없고 해야할 과제만 남아있다면
+            {
+                nCurTime = lstPlan[0].StartSeconds; // 현재 시간을 과제의 시작 시간으로 변경
+                
+                if (lstPlan.Count > 1) // 과제가 2개 이상이면
+                {
+                    // 다음 과제 시작 전에 현재 과제를 마무리 가능하다면
+                    if (nCurTime + lstPlan[0].RemainSeconds <= lstPlan[1].StartSeconds)
+                    {
+                        // 현재 시간에 과제 시간을 더하여 현재 시간을 변경
+                        nCurTime += lstPlan[0].RemainSeconds;
+                        // 과제 완료 추가
+                        queReturn.Enqueue(lstPlan[0].Name);
+                        // 과제 제거
+                        lstPlan.RemoveAt(0);
+                    }
+                    else // 현재 과제를 하다가 보류 과제로 두고 다음 과제를 해야하면
+                    {
+                        // 현재 과제의 남은 시간을 과제 진행한 만큼 빼주고
+                        lstPlan[0].RemainSeconds -= lstPlan[1].StartSeconds - nCurTime;
+                        // 현재 시간을 다음 과제 시간으로 변경
+                        nCurTime = lstPlan[1].StartSeconds;
+                        // 현재 과제를 보류 과제로 추가
+                        stkPlan.Push(lstPlan[0]);
+                        // 보류 과제에 추가한 과제를 제거
+                        lstPlan.RemoveAt(0);
+                    }
+                }
+                else // 과제가 1개 남았다면
+                {
+                    // 과제 완료 추가
+                    queReturn.Enqueue(lstPlan[0].Name);
+                    // 과제 제거
+                    lstPlan.RemoveAt(0);
+                }
+            }
+        }
+        
+        arrReturn = queReturn.ToArray(); // Array화
+        return arrReturn;
+    }
+}
+
+public class Plan
+{
+    private string sName;
+    private int nStartSeconds;
+    private int nRemainSeconds;
+
+    public string Name
+    {
+        get { return sName; }
+        set { sName = value; }
+    }
+
+    public int StartSeconds
+    {
+        get { return nStartSeconds; }
+        set { nStartSeconds = value; }
+    }
+
+    public int RemainSeconds
+    {
+        get { return nRemainSeconds; }
+        set { nRemainSeconds = value; }
+    }
+
+    public Plan(string sName, int nStartSeconds, int nRemainSeconds)
+    {
+        this.sName = sName;
+        this.nStartSeconds = nStartSeconds;
+        this.nRemainSeconds = nRemainSeconds;
+    }
+}
