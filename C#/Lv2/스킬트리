@@ -1,0 +1,48 @@
+using System;
+
+public class Solution {
+    public int solution(string skill, string[] skill_trees) {
+        int answer = 0;
+        int[] arrIndex = new int[skill.Length];
+
+        for (int i = 0; i < skill_trees.Length; i++)
+        {
+            for (int j = 0; j < skill.Length; j++)
+            {
+                arrIndex[j] = skill_trees[i].IndexOf(skill[j]);
+            }
+
+            bool bRet = true;
+            bool bMinus = arrIndex[0] == -1 ? true : false;
+            for (int j = 1; j < arrIndex.Length; j++)
+            {
+                int nPreIndex = arrIndex[j - 1];
+
+                if (bMinus && arrIndex[j] > -1)
+                {
+                    bRet = false;
+                    break;
+                }
+
+                if (arrIndex[j] == -1)
+                {
+                    bMinus = true;
+                    continue;
+                }
+
+                if (nPreIndex > arrIndex[j])
+                {
+                    bRet = false;
+                    break;
+                }
+            }
+
+            if (bRet)
+            {
+                answer++;
+            }
+        }
+
+        return answer;
+    }
+}
