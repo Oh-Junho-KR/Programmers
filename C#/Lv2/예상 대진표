@@ -1,0 +1,59 @@
+using System;
+
+class Solution
+{
+    public int solution(int n, int a, int b)
+    {
+        int answer = 0;
+
+        int nAvg = n / 2;
+        if ((a <= nAvg && b > nAvg) || (b <= nAvg && a > nAvg))
+        {
+            while (true)
+            {
+                n /= 2;
+                answer++;
+                if (n == 1)
+                {
+                    break;
+                }
+            }
+        }
+        else
+        {
+            while (true)
+            {
+                answer++;
+
+                if (a > b)
+                {
+                    if (a == b + 1 && a % 2 == 0)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        n /= 2;
+                        a = a % 2 == 0 ? a / 2 : a / 2 + 1;
+                        b = b % 2 == 0 ? b / 2 : b / 2 + 1;
+                    }
+                }
+                else
+                {
+                    if (a + 1 == b && b % 2 == 0)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        n /= 2;
+                        a = a % 2 == 0 ? a / 2 : a / 2 + 1;
+                        b = b % 2 == 0 ? b / 2 : b / 2 + 1;
+                    }
+                }
+            }
+        }
+
+        return answer;
+    }
+}
