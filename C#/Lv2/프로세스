@@ -1,0 +1,55 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class Solution {
+    public int solution(int[] priorities, int location) {
+        int answer = 0; // 정답
+        int nCur = 0; // 배열 현재 Index
+
+        // Queue<Dic = 인덱스 : 우선순위>
+        Queue<Dictionary<int, int>> queProcess = new Queue<Dictionary<int, int>>();
+        // 우선순위 정렬
+        int[] arrSortPriority = priorities.OrderByDescending(x => x).ToArray();
+
+        // Queue에 데이터 저장
+        for (int i = 0; i < priorities.Length; i++)
+        {
+            Dictionary<int, int> dicProcessInfo = new Dictionary<int, int>();
+            dicProcessInfo[i] = priorities[i];
+            queProcess.Enqueue(dicProcessInfo);
+        }
+
+        while (true)
+        {
+            // 가장 먼저 넣은 Data 추출
+            Dictionary<int, int> dicFirstInfo = queProcess.Dequeue();
+            // 우선순위 높은 값이 아니면
+            if (arrSortPriority[nCur] != dicFirstInfo.First().Value)
+            {
+                // 다시 Queue에 넣음
+                queProcess.Enqueue(dicFirstInfo);
+            }
+            else // 우선순위 높은 값이 맞으면
+            {
+                // location과 index값을 비교해서 원하는 결과의 location인지 확인
+                if (location == dicFirstInfo.First().Key)
+                {
+                    nCur++;
+                    answer = nCur;
+                }
+                else
+                {
+                    nCur++;
+                } 
+            }
+            
+            if (answer != 0)
+            {
+                break;
+            }               
+        }
+
+        return answer;
+    }
+}
