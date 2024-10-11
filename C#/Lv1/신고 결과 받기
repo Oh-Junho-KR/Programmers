@@ -1,0 +1,64 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class Solution {
+    public int[] solution(string[] id_list, string[] report, int k) {
+        int[] arrResult = new int[id_list.Length];
+        report = report.Distinct().ToArray(); // 중복을 제거하여 A가 B를 여러번 신고 하는 것을 막음
+
+        // <string : 신고 당한 사람, List<string> : 신고한 사람 List
+        Dictionary<string, List<string>> dicReport = new Dictionary<string, List<string>>();
+        // <string : 신고한 사람, int : 신고한 사람에게 갈 메세지 수
+        Dictionary<string, int> dicResult = new Dictionary<string, int>();
+
+        // id_list 순서대로 0으로 초기화
+        for (int i = 0; i < id_list.Length; i++)
+        {
+            dicResult.Add(id_list[i], 0);
+        }
+
+        // dicReport를 정리(신고 당한 사람, 신고자 리스트)
+        // 신고 개수 만큼 반복
+        for (int i = 0; i < report.Length; i++)
+        {
+            string[] arrSplitReport = report[i].Split(' '); // ' '로 구분
+            // 신고 당한 사람이 dictionary에 존재할 때 해당 List<string>에 신고한 사람 추가
+            if (dicReport.ContainsKey(arrSplitReport[1]))
+            {
+                dicReport[arrSplitReport[1]].Add(arrSplitReport[0]);
+            }
+            else // 신고 당한 사람을 처음으로 dictionary에 새롭게 신고한 사람 추가
+            {
+                dicReport.Add(arrSplitReport[1], new List<string>() { arrSplitReport[0] });
+            }
+        }
+
+        // dicResult를 정리(신고한 사람, 메세지 개수)
+        // 사용자 리스트 반복
+        for (int i = 0; i < id_list.Length; i++)
+        {
+            // 신고 당한 사람이 있으면
+            if (dicReport.ContainsKey(id_list[i]))
+            {
+                // 신고자 목록이 k명 이상이면
+                if (dicReport[id_list[i]].Count >= k)
+                {
+                    // 신고자에 메일이 갈테니 결과 값에 +1
+                    for (int j = 0; j < dicReport[id_list[i]].Count; j++)
+                    {
+                        dicResult[dicReport[id_list[i]][j]]++;
+                    }
+                }
+            } 
+        }
+        
+        // 결과 arrResult에 값 대입
+        for (int i = 0; i < dicResult.Count; i++)
+        {
+            arrResult[i] = dicResult[id_list[i]];
+        }
+
+        return arrResult;
+    }
+}
