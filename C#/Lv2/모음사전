@@ -1,0 +1,20 @@
+using System;
+using System.Collections.Generic;
+
+public class Solution {
+    public int solution(string word) {
+        // 초기 문자열 개수만큼 더함
+        int answer = word.Length; 
+        // 문자별로 변한 횟수
+        Dictionary<string, int> dicVowel = new Dictionary<string, int>() { { "A", 0 }, { "E", 1 }, { "I", 2 }, { "O", 3 }, { "U", 4 } };
+        // Index당 증가량
+        int[] nIncrease = new int[] { 781, 156, 31, 6, 1 };
+
+        for (int i = word.Length - 1; i > -1; i--)
+        {
+            answer += nIncrease[i] * dicVowel[word[i].ToString()];
+        }
+
+        return answer;
+    }
+}
