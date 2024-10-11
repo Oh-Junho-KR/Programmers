@@ -1,0 +1,26 @@
+public class Solution {
+    public long solution(int n) {
+        long answer = 0;
+        long[] dpResult = new long[n + 1];
+
+        for (long i = 1; i <= n; i++)
+        {
+            if (i == 1)
+            {
+                dpResult[i] = 1;
+            }
+            else if (i == 2)
+            {
+                dpResult[i] = 2;
+            }
+            else
+            {
+                dpResult[i] = (dpResult[i - 1] + dpResult[i - 2]) % 1234567;
+            }
+        }
+
+        answer = dpResult[n];
+
+        return answer;
+    }
+}
