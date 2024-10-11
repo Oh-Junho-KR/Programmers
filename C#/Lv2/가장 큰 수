@@ -1,0 +1,18 @@
+using System;
+
+public class Solution {
+    public string solution(int[] numbers) {
+        string answer = "";
+
+        Array.Sort(numbers, (x, y) => (y.ToString() + x.ToString()).CompareTo(x.ToString() + y.ToString()));
+
+        answer = string.Join("", numbers);
+
+        if (answer.IndexOf('0') == 0)
+        {
+            answer = "0";
+        }
+        
+        return answer;
+    }
+}
