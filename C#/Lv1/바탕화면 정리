@@ -1,0 +1,40 @@
+using System;
+
+public class Solution {
+    public int[] solution(string[] wallpaper) {
+        int[] arrResult = new int[4] { -1, -1, -1, -1 };
+
+        for (int i = 0; i < wallpaper.Length; i++)
+        {
+            if (wallpaper[i].Contains("#"))
+            {
+                if (arrResult[0] == -1)
+                {
+                    arrResult[0] = i;
+                }
+
+                arrResult[2] = i + 1;
+
+                if (arrResult[1] == -1)
+                {
+                    arrResult[1] = wallpaper[i].IndexOf("#");
+                }
+                else
+                {
+                    arrResult[1] = arrResult[1] > wallpaper[i].IndexOf("#") ? wallpaper[i].IndexOf("#") : arrResult[1];
+                }
+                
+                if (arrResult[3] == -1)
+                {
+                    arrResult[3] = (wallpaper[i].LastIndexOf("#") + 1);
+                }
+                else
+                {
+                    arrResult[3] = arrResult[3] < (wallpaper[i].LastIndexOf("#") + 1) ? (wallpaper[i].LastIndexOf("#") + 1) : arrResult[3];
+                }
+            }
+        }
+
+        return arrResult;
+    }
+}
