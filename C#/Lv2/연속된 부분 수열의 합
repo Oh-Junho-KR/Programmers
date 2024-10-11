@@ -1,0 +1,112 @@
+using System;
+
+public class Solution {
+    public int[] solution(int[] sequence, int k) {
+        int[] arrAnswer = new int[2];
+
+        bool bFristSearch = true; // arrAnswer에 초기화를 시키지 않아서 크기 비교가 불가하여 첫 결과값인지 여부만 파악
+        bool bChangeEnd = false; // EndIndex가 움직인 여부
+
+        int nSum = 0; // sequence[nStartIndex] ~ sequence[nEndIndex] 까지의 합
+        int nStartIndex = sequence.Length -1; // Start Index
+        int nEndIndex = sequence.Length - 1; // End Index
+        
+        // 처음부터 끝까지 요소가 같을 경우
+        if (sequence[0] == sequence[sequence.Length - 1])
+        {
+            arrAnswer[0] = 0;
+            arrAnswer[1] = k / sequence[0] - 1;
+
+            return arrAnswer; // 빠르게 결과 Return
+        }
+
+        // sequence 거꾸로 반복
+        for (int i = nEndIndex; i > -1; i--)
+        {
+            if (!bFristSearch) // 결과가 이미 있다면 
+            {
+                // 결과 index 거리가 기존 결과보다 멀다면
+                // 동일한 길이의 더 작은 index를 찾기 위해 continue
+                if (arrAnswer[1] - arrAnswer[0] < i - nStartIndex)
+                {
+                    continue;
+                }
+            }
+
+            // 첫 반복의 시작이 아니면
+            if (i != sequence.Length - 1)
+            {
+                // EndIndex가 움직였으니 Sum에서 빼줌
+                nSum -= sequence[i + 1];
+                // End Index 변경
+                bChangeEnd = true;
+            }
+
+            // 반복하여
+            while (true)
+            {
+                // nStartIndex가 -1이 되면 정지
+                if (nStartIndex == -1)
+                {
+                    break;
+                }
+
+                // 첫 결과값이 아니라면 index 사이 길이 비교하여
+                // 기존 저장된 결과값 보다 크면 반복 종료
+                if (!bFristSearch)
+                {
+                    if (arrAnswer[1] - arrAnswer[0] < i - nStartIndex)
+                    {
+                        break;
+                    }
+                }
+
+                // End가 움직인게 아니라면
+                if (!bChangeEnd)
+                {
+                    // nStartIndex가 -1로 이동한 값을 더해줌
+                    nSum += sequence[nStartIndex];
+                }
+                else // End가 움직인거라면
+                {
+                    bChangeEnd = false;
+                }
+
+                // 결과 값이 같으면
+                if (nSum == k)
+                {
+                    if (bFristSearch) // 첫 결과면 Answer Array에 결과값 저장
+                    {
+                        arrAnswer[0] = nStartIndex;
+                        arrAnswer[1] = i;
+
+                        bFristSearch = false;
+                    } else // 첫 결과가 아니라면
+                    {
+                        if (arrAnswer[1] - arrAnswer[0] >= i - nStartIndex) // 길이 비교
+                        {
+                            arrAnswer[0] = nStartIndex;
+                            arrAnswer[1] = i;
+                        }
+                    }
+
+                    // 결과 저장 후 Sum값에 StartIndex -1값을 더하고 반복 종료
+                    nStartIndex--;
+                    if (nStartIndex != -1)
+                    {
+                        nSum += sequence[nStartIndex];
+                    }
+                    break;
+                }
+                else if (nSum > k) // k보다 크면 반복 종료하고 End위치를 변경
+                {
+                    break;
+                }
+
+                nStartIndex--;
+            }
+        }
+
+        return arrAnswer;
+    }
+}
