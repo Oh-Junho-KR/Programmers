@@ -1,0 +1,28 @@
+using System;
+
+class Solution
+{
+    public int solution(int n)
+    {
+        int answer = 0;
+
+        while (true)
+        {
+            if (n == 1)
+            {
+                answer++;
+                break;
+            }
+
+            if (n % 2 == 1)
+            {
+                answer++;
+                n -= 1;
+            }
+
+            n /= 2;
+        }
+
+        return answer;
+    }
+}
