@@ -1,0 +1,37 @@
+using System;
+using System.Collections.Generic;
+
+public class Solution {
+    public int[] solution(string today, string[] terms, string[] privacies) {
+        int[] arrAnswer = new int[] { };
+        List<int> lstResult = new List<int>();
+
+        string[] arrToday = today.Split('.');
+        int nToday = Convert.ToInt16(arrToday[0]) * 12 * 28 + Convert.ToInt16(arrToday[1]) * 28 + Convert.ToInt16(arrToday[2]);
+
+        Dictionary<string, int> dicTerms = new Dictionary<string, int>();
+        for(int i = 0; i < terms.Length; i++)
+        {
+            dicTerms.Add(terms[i].Split(' ')[0], Convert.ToInt16(terms[i].Split(' ')[1]) * 28);
+        }
+
+        Dictionary<string, int> dicPrivacy = new Dictionary<string, int>();
+        for (int i = 0; i < privacies.Length; i++)
+        {
+            string[] arrPrivacy = privacies[i].Split(' ');
+            string[] arrDate = arrPrivacy[0].Split('.');
+
+            int nDate = Convert.ToInt16(arrDate[0]) * 12 * 28 + Convert.ToInt16(arrDate[1]) * 28 + Convert.ToInt16(arrDate[2]);
+            string sType = arrPrivacy[1];
+
+            if (nDate + dicTerms[sType] <= nToday)
+            {
+                lstResult.Add(i + 1);
+            }
+        }
+
+        arrAnswer = lstResult.ToArray();
+
+        return arrAnswer;
+    }
+}
