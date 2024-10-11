@@ -1,0 +1,44 @@
+using System;
+
+public class Solution {
+    public int solution(string[] arrBabbling) {
+        int nAnswer = 0;
+        string[] arrWord = new string[] { "aya", "ye", "woo", "ma" };
+
+        for (int i = 0; i < arrBabbling.Length; i++)
+        {
+            string sMsg = arrBabbling[i];
+            string sAnswer = "".PadLeft(sMsg.Length, '-');
+            while (true)
+            {
+                bool bContains = false;
+                for (int j = 0; j < arrWord.Length; j++)
+                {
+                    if (sMsg.Contains(arrWord[j]))
+                    {
+                        bContains = true;
+
+                        string sReplace = "".PadLeft(arrWord[j].Length, '-');
+                        sMsg = sMsg.Replace(arrWord[j], sReplace);
+                        break;
+                    }
+                }
+
+                if (!bContains)
+                {
+                    if (sAnswer == sMsg)
+                    {
+                        nAnswer++;
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        return nAnswer;
+    }
+}
