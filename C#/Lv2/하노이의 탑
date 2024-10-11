@@ -1,0 +1,39 @@
+using System;
+using System.Collections.Generic;
+
+public class Solution {
+    public int[,] solution(int n) {
+        long lLen = 1;
+        for (int i = 0; i < n; i++)
+        {
+            lLen *= 2;
+        }
+        int[,] answer = new int[lLen - 1, 2];
+        List<int> lstAnswer = new List<int>();
+        fnHanoi(n, 1, 3, 2, lstAnswer);
+
+        for (int i = 0; i < lstAnswer.Count / 2; i++)
+        {
+            answer[i, 0] = lstAnswer[i * 2];
+            answer[i, 1] = lstAnswer[i * 2 + 1];
+        }
+
+        return answer;
+    }
+    
+    public void fnHanoi(int n, int nFrom, int nTo, int nSub, List<int> lstAnswer)
+    {
+        if (n == 1)
+        {
+            lstAnswer.Add(nFrom);
+            lstAnswer.Add(nTo);
+        }
+        else
+        {
+            fnHanoi(n - 1, nFrom, nSub, nTo, lstAnswer);
+            lstAnswer.Add(nFrom);
+            lstAnswer.Add(nTo);
+            fnHanoi(n - 1, nSub, nTo, nFrom, lstAnswer);
+        }
+    }
+}
