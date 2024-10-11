@@ -1,0 +1,30 @@
+using System;
+using System.Text.RegularExpressions;
+
+public class Solution {
+    public int solution(int nNum, long lStart, long lEnd) {
+        int nResult = 0;
+        
+        for (long i = lStart - 1; i < lEnd; i++)
+        {
+            if (FindIndexTwo(i)) nResult++;
+        }
+
+        return nResult;
+    }
+    
+    private bool FindIndexTwo(long l){
+        // index가 5보다 작고 index가 2가 아니면 true 
+        if (l < 5 && l != 2){
+            return true;
+        } 
+        
+        // 늘어나는 형태가 5로 나누었을 때 index : 2는 무조건 0이므로 false
+        if ((l - 2) % 5 == 0) {
+            return false;
+        }
+
+        // 5의 배수로 늘어나기 때문에 5로 계속 나누어줌
+        return FindIndexTwo(l / 5);
+    }
+}
