@@ -1,0 +1,27 @@
+public class Solution {
+    public string solution(string s) {
+        string answer = "";
+
+        string[] arrStrSplit = s.Split(' ');
+        for (int i = 0; i < arrStrSplit.Length; i++)
+        {
+            if (arrStrSplit[i].Length == 0)
+            {
+                answer += " ";
+                continue;
+            }
+            
+            if (!char.IsDigit(arrStrSplit[i][0]))
+            {
+                string sTemp = arrStrSplit[i].ToLower();
+                answer = answer.Length > 0 ? answer + " " + char.ToUpper(sTemp[0]) + sTemp.Substring(1) : char.ToUpper(sTemp[0]) + sTemp.Substring(1);
+            }
+            else
+            {
+                answer = answer.Length > 0 ? answer + " " + arrStrSplit[i].ToLower() : arrStrSplit[i].ToLower();
+            }
+        }
+
+        return answer;
+    }
+}
