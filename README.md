@@ -1,2 +1,2 @@
 # CSharp.Programmers
-Programmers Problem Solving Repository
+It is the problem solving content of programmers.
