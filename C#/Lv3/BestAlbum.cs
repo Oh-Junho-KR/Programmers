@@ -9,7 +9,7 @@ namespace ProgrammersTest
         public BestAlbum()
         {
             // 장르 재생수 / 노래 재생수 / 노래 고유번호
-            int[] arrResult1 = solution(new string[] { "classic", "pop", "classic", "classic", "pop" }, new int[] { 500, 600, 150, 800, 2500 }); // 4, 1, 3, 0
+            int[] arrResult1 = solution(new string[] { "classic", "pop", "classic", "classic", "pop" }, new int[] { 500, 600, 150, 800, 2500 });
         }
 
         public int[] solution(string[] genres, int[] plays)
