@@ -6,10 +6,10 @@ namespace ProgrammersTest
     {
         public BuyCookie()
         {
-            //Console.WriteLine(solution(new int[] { 1, 1, 1, 1 }));
-            //Console.WriteLine(solution(new int[] { 1, 1, 2, 3 }));
-            //Console.WriteLine(solution(new int[] { 1, 2, 4, 5 }));
-            //Console.WriteLine(solution(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }));
+            Console.WriteLine(solution(new int[] { 1, 1, 1, 1 }));
+            Console.WriteLine(solution(new int[] { 1, 1, 2, 3 }));
+            Console.WriteLine(solution(new int[] { 1, 2, 4, 5 }));
+            Console.WriteLine(solution(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }));
             Console.WriteLine(solution(new int[] { 0, 3, 3, 3, 3, 3, 5, 5, 5, 6 }));
         }
 
