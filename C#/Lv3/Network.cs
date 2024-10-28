@@ -2,7 +2,7 @@ using System;
 
 namespace ProgrammersTest
 {
-    internal class Network
+    class Network
     {
         public Network()
         {
