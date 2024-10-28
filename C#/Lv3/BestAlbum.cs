@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ProgrammersTest
 {
-    internal class BestAlbum
+    class BestAlbum
     {
         public BestAlbum()
         {
