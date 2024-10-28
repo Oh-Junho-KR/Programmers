@@ -8,8 +8,8 @@ namespace ProgrammersTest
     {
         public ConvertWords()
         {
-            Console.WriteLine(solution("hit", "cog", new string[] { "hot", "dot", "dog", "lot", "log", "cog" })); // 4
-            Console.WriteLine(solution("hit", "cog", new string[] { "hot", "dot", "dog", "lot", "log" })); // 0
+            Console.WriteLine(solution("hit", "cog", new string[] { "hot", "dot", "dog", "lot", "log", "cog" }));
+            Console.WriteLine(solution("hit", "cog", new string[] { "hot", "dot", "dog", "lot", "log" }));
         }
 
         public int solution(string begin, string target, string[] words)
