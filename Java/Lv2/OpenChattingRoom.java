@@ -2,8 +2,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-class Solution {
-    public String[] solution(String[] record) {
+public class OpenChattingRoom {
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		OpenChattingRoom ocr = new OpenChattingRoom();
+		String[] arrRst = ocr.solution(new String[] {"Enter uid1234 Muzi", "Enter uid4567 Prodo","Leave uid1234","Enter uid1234 Prodo","Change uid4567 Ryan"});
+		for (int i = 0; i < arrRst.length; i++) {
+			System.out.println(arrRst[i]);
+		}
+	}
+
+	public String[] solution(String[] record) {
         String[] answer = null; // 정답
         StringBuilder sbReturn = new StringBuilder(); // 정답 문자열
         
