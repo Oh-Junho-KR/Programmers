@@ -1,5 +1,4 @@
 public class DistanceCheck {
-
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		String[][] arrPlace = new String[][] {
