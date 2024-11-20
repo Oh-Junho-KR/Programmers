@@ -1,0 +1,8 @@
+SELECT  AI.ANIMAL_ID ID, 
+        AI.NAME NAME, 
+        CASE
+            WHEN AI.SEX_UPON_INTAKE LIKE N'%Neutered%' OR AI.SEX_UPON_INTAKE LIKE N'%Spayed%' THEN 'O'
+            ELSE 'X'
+        END '중성화'
+FROM ANIMAL_INS AI
+ORDER BY ID ASC
